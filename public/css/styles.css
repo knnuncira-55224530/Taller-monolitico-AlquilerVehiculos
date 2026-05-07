@@ -1,0 +1,117 @@
+body {
+
+    margin: 0;
+    font-family: Arial;
+    background: #f4f4f4;
+}
+
+header {
+
+    background: #1f2937;
+    color: white;
+    padding: 20px;
+}
+
+main {
+
+    padding: 20px;
+}
+
+table {
+
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th {
+
+    background: #374151;
+    color: white;
+}
+
+th, td {
+
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.btn {
+
+    display: inline-block;
+    padding: 10px 15px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+form {
+
+    background: white;
+    padding: 20px;
+}
+
+input, select {
+
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+button {
+
+    padding: 10px 20px;
+    background: #16a34a;
+    color: white;
+    border: none;
+}
+
+.btn-edit {
+
+    background: #f59e0b;
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+}
+
+.btn-delete {
+
+    background: #dc2626;
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+nav {
+    margin-top: 10px;
+}
+
+.btn-nav {
+    color: white;
+    text-decoration: none;
+    margin-right: 15px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border: 1px solid white;
+    border-radius: 4px;
+}
+
+.btn-nav:hover {
+    background: white;
+    color: #1f2937;
+}
+
+.btn-finalizar {
+    background: #16a34a;
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.btn-finalizar:hover {
+    background: #15803d;
+}
