@@ -1,71 +1,105 @@
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<h2>Clientes Registrados</h2>
+<div class="card">
 
-<a href="?module=clientes&action=create" class="btn">
-    Agregar Cliente
-</a>
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:25px;
+        flex-wrap:wrap;
+        gap:15px;
+    ">
 
-<br><br>
+        <h2>👥 Clientes Registrados</h2>
 
-<table>
+        <a href="?module=clientes&action=create" class="btn">
+            + Nuevo Cliente
+        </a>
 
-    <thead>
+    </div>
 
-        <tr>
+    <?php if (!empty($clientes)): ?>
 
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Teléfono</th>
-            <th>Correo</th>
-            <th>Licencia</th>
-            <th>Acciones</th>
+        <table>
 
-        </tr>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-    </thead>
+            <tbody>
 
-    <tbody>
+                <?php foreach ($clientes as $cliente): ?>
 
-        <?php foreach($clientes as $cliente): ?>
+                    <tr>
 
-        <tr>
+                        <td>
+                            <?= $cliente['id'] ?>
+                        </td>
 
-            <td><?= $cliente['id']; ?></td>
+                        <td>
+                            <?= $cliente['nombre'] ?>
+                        </td>
 
-            <td><?= $cliente['nombre']; ?></td>
+                        <td>
+                            <?= $cliente['correo'] ?>
+                        </td>
 
-            <td><?= $cliente['telefono']; ?></td>
+                        <td>
+                            <?= $cliente['telefono'] ?>
+                        </td>
 
-            <td><?= $cliente['correo']; ?></td>
+                        <td style="display:flex; gap:10px; flex-wrap:wrap;">
 
-            <td><?= $cliente['numero_licencia']; ?></td>
+                            <a class="btn-edit"
+                               href="?module=clientes&action=edit&id=<?= $cliente['id'] ?>">
+                               Editar
+                            </a>
 
-            <td>
+                            <a class="btn-delete"
+                               href="?module=clientes&action=delete&id=<?= $cliente['id'] ?>"
+                               onclick="return confirm('¿Deseas eliminar este cliente?')">
+                               Eliminar
+                            </a>
 
-                <a
-                    href="?module=clientes&action=edit&id=<?= $cliente['id']; ?>"
-                    class="btn-edit"
-                >
-                    Editar
-                </a>
+                        </td>
 
-                <a
-                    href="?module=clientes&action=delete&id=<?= $cliente['id']; ?>"
-                    class="btn-delete"
-                    onclick="return confirm('¿Eliminar cliente?')"
-                >
-                    Eliminar
-                </a>
+                    </tr>
 
-            </td>
+                <?php endforeach; ?>
 
-        </tr>
+            </tbody>
 
-        <?php endforeach; ?>
+        </table>
 
-    </tbody>
+    <?php else: ?>
 
-</table>
+        <div style="
+            background:#1e293b;
+            padding:25px;
+            border-radius:15px;
+            text-align:center;
+            margin-top:20px;
+        ">
+
+            <h3 style="margin-bottom:10px;">
+                No hay clientes registrados
+            </h3>
+
+            <p style="opacity:0.8;">
+                Agrega tu primer cliente para comenzar.
+            </p>
+
+        </div>
+
+    <?php endif; ?>
+
+</div>
 
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?>

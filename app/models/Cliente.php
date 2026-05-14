@@ -1,11 +1,17 @@
 <?php
 
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/Database.php';
 
 class Cliente {
 
     private $conn;
-    private $table = "clientes";
+    private $table = 'clientes';
+
+    private $id;
+    private $nombre;
+    private $telefono;
+    private $correo;
+    private $numero_licencia;
 
     public function __construct() {
 
@@ -16,80 +22,73 @@ class Cliente {
 
     public function obtenerTodos() {
 
-        $sql = "SELECT * FROM " . $this->table;
+        $query = "SELECT * FROM " . $this->table;
 
-        $stmt = $this->conn->prepare($sql);
-
+        $stmt = $this->conn->prepare($query);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function crear($datos) {
-
-        $sql = "INSERT INTO " . $this->table . "
-                (nombre, telefono, correo, numero_licencia)
-                VALUES
-                (:nombre, :telefono, :correo, :numero_licencia)";
-
-        $stmt = $this->conn->prepare($sql);
-
-        return $stmt->execute([
-
-            ':nombre' => $datos['nombre'],
-            ':telefono' => $datos['telefono'],
-            ':correo' => $datos['correo'],
-            ':numero_licencia' => $datos['numero_licencia']
-
-        ]);
-    }
-
     public function obtenerPorId($id) {
 
-        $sql = "SELECT * FROM " . $this->table . "
-                WHERE id = :id";
+        $query = "SELECT * FROM " . $this->table . " WHERE id = :id";
 
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare($query);
 
-        $stmt->execute([
-            ':id' => $id
-        ]);
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function actualizar($id, $datos) {
+    public function crear($nombre, $telefono, $correo, $numero_licencia) {
 
-        $sql = "UPDATE " . $this->table . "
-                SET
-                nombre = :nombre,
-                telefono = :telefono,
-                correo = :correo,
-                numero_licencia = :numero_licencia
-                WHERE id = :id";
+        $query = "INSERT INTO " . $this->table . "
+        (nombre, telefono, correo, numero_licencia)
+        VALUES
+        (:nombre, :telefono, :correo, :numero_licencia)";
 
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare($query);
 
-        return $stmt->execute([
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':telefono', $telefono);
+        $stmt->bindParam(':correo', $correo);
+        $stmt->bindParam(':numero_licencia', $numero_licencia);
 
-            ':nombre' => $datos['nombre'],
-            ':telefono' => $datos['telefono'],
-            ':correo' => $datos['correo'],
-            ':numero_licencia' => $datos['numero_licencia'],
-            ':id' => $id
+        return $stmt->execute();
+    }
 
-        ]);
+    public function actualizar($id, $nombre, $telefono, $correo, $numero_licencia) {
+
+        $query = "UPDATE " . $this->table . "
+        SET
+        nombre = :nombre,
+        telefono = :telefono,
+        correo = :correo,
+        numero_licencia = :numero_licencia
+        WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':telefono', $telefono);
+        $stmt->bindParam(':correo', $correo);
+        $stmt->bindParam(':numero_licencia', $numero_licencia);
+
+        return $stmt->execute();
     }
 
     public function eliminar($id) {
 
-        $sql = "DELETE FROM " . $this->table . "
-                WHERE id = :id";
+        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
 
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare($query);
 
-        return $stmt->execute([
-            ':id' => $id
-        ]);
+        $stmt->bindParam(':id', $id);
+
+        return $stmt->execute();
     }
 }

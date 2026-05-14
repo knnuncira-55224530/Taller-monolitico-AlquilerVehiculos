@@ -4,52 +4,50 @@ require_once __DIR__ . '/../models/Vehiculo.php';
 
 class VehiculoController {
 
+    private $vehiculoModel;
+
+    public function __construct() {
+        $this->vehiculoModel = new Vehiculo();
+    }
+
+    private function view($ruta, $datos = []) {
+        extract($datos);
+        require_once __DIR__ . '/../views/' . $ruta . '.php';
+    }
+
     public function index() {
 
-        $vehiculo = new Vehiculo();
+        $vehiculos = $this->vehiculoModel->obtenerTodos();
 
-        $vehiculos = $vehiculo->obtenerTodos();
-
-        require_once __DIR__ . '/../views/vehiculos/index.php';
+        $this->view('vehiculos/index', [
+            'vehiculos' => $vehiculos
+        ]);
     }
+
     public function create() {
 
-        require_once __DIR__ . '/../views/vehiculos/create.php';
+        $this->view('vehiculos/create');
     }
 
     public function store() {
 
-        $vehiculo = new Vehiculo();
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $vehiculo->crear($_POST);
+            $marca = $_POST['marca'];
+            $modelo = $_POST['modelo'];
+            $anio = $_POST['anio'];
+            $categoria = $_POST['categoria'];
+            $estado = $_POST['estado'];
 
-        header("Location: /Taller-monolitico-AlquilerVehiculos/public/");
-    }
+            $this->vehiculoModel->crear(
+                $marca,
+                $modelo,
+                $anio,
+                $categoria,
+                $estado
+            );
 
-    public function edit() {
-
-        $vehiculo = new Vehiculo();
-
-        $data = $vehiculo->obtenerPorId($_GET['id']);
-
-        require_once __DIR__ . '/../views/vehiculos/edit.php';
-    }
-
-    public function update() {
-
-            $vehiculo = new Vehiculo();
-
-            $vehiculo->actualizar($_GET['id'], $_POST);
-
-            header("Location: /Taller-monolitico-AlquilerVehiculos/public/");
-    }
-
-    public function delete() {
-
-        $vehiculo = new Vehiculo();
-
-        $vehiculo->eliminar($_GET['id']);
-
-        header("Location: /Taller-monolitico-AlquilerVehiculos/public/");
+            header('Location: index.php?controller=vehiculo&action=index');
+        }
     }
 }

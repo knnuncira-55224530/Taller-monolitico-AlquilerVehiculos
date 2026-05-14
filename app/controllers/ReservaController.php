@@ -1,64 +1,66 @@
 <?php
 
 require_once __DIR__ . '/../models/Reserva.php';
+require_once __DIR__ . '/../models/Cliente.php';
+require_once __DIR__ . '/../models/Vehiculo.php';
 
 class ReservaController {
 
+    private $reservaModel;
+    private $clienteModel;
+    private $vehiculoModel;
+
+    public function __construct() {
+
+        $this->reservaModel = new Reserva();
+        $this->clienteModel = new Cliente();
+        $this->vehiculoModel = new Vehiculo();
+    }
+
+    private function view($ruta, $datos = []) {
+        extract($datos);
+        require_once __DIR__ . '/../views/' . $ruta . '.php';
+    }
+
     public function index() {
 
-        $reserva = new Reserva();
+        $reservas = $this->reservaModel->obtenerTodas();
 
-        $reservas = $reserva->obtenerTodas();
-
-        require_once __DIR__ . '/../views/reservas/index.php';
+        $this->view('reservas/index', [
+            'reservas' => $reservas
+        ]);
     }
 
     public function create() {
 
-        $reserva = new Reserva();
+        $clientes = $this->clienteModel->obtenerTodos();
+        $vehiculos = $this->vehiculoModel->obtenerTodos();
 
-        $clientes = $reserva->obtenerClientes();
-
-        $vehiculos = $reserva->obtenerVehiculosDisponibles();
-
-        require_once __DIR__ . '/../views/reservas/create.php';
+        $this->view('reservas/create', [
+            'clientes' => $clientes,
+            'vehiculos' => $vehiculos
+        ]);
     }
 
     public function store() {
 
-        $fechaInicio = $_POST['fecha_inicio'];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $fechaFin = $_POST['fecha_fin'];
+            $cliente_id = $_POST['cliente_id'];
+            $vehiculo_id = $_POST['vehiculo_id'];
+            $fecha_inicio = $_POST['fecha_inicio'];
+            $fecha_fin = $_POST['fecha_fin'];
+            $estado = $_POST['estado'];
 
-        $hoy = date('Y-m-d');
+            $this->reservaModel->crear(
+                $cliente_id,
+                $vehiculo_id,
+                $fecha_inicio,
+                $fecha_fin,
+                $estado
+            );
 
-        // Validar fechas pasadas
-
-        if($fechaInicio < $hoy) {
-
-            die("Error: La fecha de inicio no puede ser anterior a hoy.");
+            header('Location: index.php?controller=reserva&action=index');
         }
-
-        // Validar fecha fin
-
-        if($fechaFin < $fechaInicio) {
-
-            die("Error: La fecha final no puede ser menor que la fecha inicial.");
-        }
-
-        $reserva = new Reserva();
-
-        $reserva->crear($_POST);
-
-        header("Location: /Taller-monolitico-AlquilerVehiculos/public/?module=reservas");
-    }
-    
-    public function finalizar() {
-
-        $reserva = new Reserva();
-
-        $reserva->finalizar($_GET['id']);
-
-        header("Location: /Taller-monolitico-AlquilerVehiculos/public/?module=reservas");
     }
 }

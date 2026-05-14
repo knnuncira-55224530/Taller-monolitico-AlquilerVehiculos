@@ -4,53 +4,71 @@ require_once __DIR__ . '/../models/Cliente.php';
 
 class ClienteController {
 
+    private $clienteModel;
+
+    public function __construct() {
+        $this->clienteModel = new Cliente();
+    }
+
+    private function view($ruta, $datos = []) {
+        extract($datos);
+        require_once __DIR__ . '/../views/' . $ruta . '.php';
+    }
+
     public function index() {
 
-        $cliente = new Cliente();
+        $clientes = $this->clienteModel->obtenerTodos();
 
-        $clientes = $cliente->obtenerTodos();
-
-        require_once __DIR__ . '/../views/clientes/index.php';
+        $this->view('clientes/index', [
+            'clientes' => $clientes
+        ]);
     }
 
     public function create() {
 
-        require_once __DIR__ . '/../views/clientes/create.php';
+        $this->view('clientes/create');
     }
 
     public function store() {
 
-        $cliente = new Cliente();
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $cliente->crear($_POST);
+            $nombre = $_POST['nombre'];
+            $telefono = $_POST['telefono'];
+            $correo = $_POST['correo'];
+            $numero_licencia = $_POST['numero_licencia'];
 
-        header("Location: /Taller-monolitico-AlquilerVehiculos/public/?module=clientes");
+            $this->clienteModel->crear(
+                $nombre,
+                $telefono,
+                $correo,
+                $numero_licencia
+            );
+
+            header('Location: index.php?controller=cliente&action=index');
+        }
     }
 
     public function edit() {
 
-        $cliente = new Cliente();
+        $id = $_GET['id'];
 
-        $data = $cliente->obtenerPorId($_GET['id']);
+        $cliente = $this->clienteModel->obtenerPorId($id);
 
-        require_once __DIR__ . '/../views/clientes/edit.php';
+        $this->view('clientes/edit', [
+            'cliente' => $cliente
+        ]);
     }
 
     public function update() {
 
-        $cliente = new Cliente();
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $cliente->actualizar($_GET['id'], $_POST);
-
-        header("Location: /Taller-monolitico-AlquilerVehiculos/public/?module=clientes");
-    }
-
-    public function delete() {
-
-        $cliente = new Cliente();
-
-        $cliente->eliminar($_GET['id']);
-
-        header("Location: /Taller-monolitico-AlquilerVehiculos/public/?module=clientes");
+            $id = $_POST['id'];
+            $nombre = $_POST['nombre'];
+            $telefono = $_POST['telefono'];
+            $correo = $_POST['correo'];
+            $numero_licencia = $_POST['numero_licencia'];
+        }
     }
 }
