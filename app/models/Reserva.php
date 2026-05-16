@@ -21,16 +21,30 @@ class Reserva {
         $this->conn = $database->connect();
     }
 
-    public function obtenerTodas() {
+    public function obtenerTodas()
+{
+    $query = "
+    SELECT
+        reservas.*,
+        clientes.nombre AS cliente,
+        vehiculos.marca,
+        vehiculos.modelo
 
-        $query = "SELECT * FROM " . $this->table;
+    FROM reservas
 
-        $stmt = $this->conn->prepare($query);
+    INNER JOIN clientes
+    ON reservas.cliente_id = clientes.id
 
-        $stmt->execute();
+    INNER JOIN vehiculos
+    ON reservas.vehiculo_id = vehiculos.id
+    ";
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    $stmt = $this->conn->prepare($query);
+
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     public function crear($cliente_id, $vehiculo_id, $fecha_inicio, $fecha_fin, $estado) {
 
@@ -49,4 +63,19 @@ class Reserva {
 
         return $stmt->execute();
     }
+
+    public function finalizar($id)
+{
+    $query = "
+    UPDATE reservas
+    SET estado = 'finalizada'
+    WHERE id = :id
+    ";
+
+    $stmt = $this->conn->prepare($query);
+
+    $stmt->bindParam(':id', $id);
+
+    return $stmt->execute();
+}
 }

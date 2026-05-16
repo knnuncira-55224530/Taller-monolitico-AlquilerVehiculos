@@ -60,15 +60,38 @@ class ClienteController {
         ]);
     }
 
-    public function update() {
+   public function update() {
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            $id = $_POST['id'];
-            $nombre = $_POST['nombre'];
-            $telefono = $_POST['telefono'];
-            $correo = $_POST['correo'];
-            $numero_licencia = $_POST['numero_licencia'];
-        }
+        $id = $_POST['id'];
+        $nombre = $_POST['nombre'];
+        $telefono = $_POST['telefono'];
+        $correo = $_POST['correo'];
+        $numero_licencia = $_POST['numero_licencia'];
+
+        $this->clienteModel->actualizar(
+            $id,
+            $nombre,
+            $telefono,
+            $correo,
+            $numero_licencia
+        );
+
+        header('Location: index.php?controller=cliente&action=index');
     }
+}
+
+public function delete()
+{
+    if (isset($_GET['id'])) {
+
+        $id = $_GET['id'];
+
+        $this->clienteModel->eliminar($id);
+
+        header('Location: index.php?controller=cliente&action=index');
+        exit();
+    }
+}
 }

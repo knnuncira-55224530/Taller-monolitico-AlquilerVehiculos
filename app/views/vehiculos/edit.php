@@ -2,49 +2,54 @@
 
 <h2>Editar Vehículo</h2>
 
-<form method="POST" action="?action=update&id=<?= $data['id']; ?>">
+<form method="POST" action="?action=update&id=<?= $vehiculo['id']; ?>">
 
+    <input
+       type="hidden"
+       name="id"
+       value="<?= $vehiculo['id']; ?>"
+    > 
     <input
         type="text"
         name="marca"
-        value="<?= $data['marca']; ?>"
+        value="<?= $vehiculo['marca']; ?>"
         required
     >
 
     <input
         type="text"
         name="modelo"
-        value="<?= $data['modelo']; ?>"
+        value="<?= $vehiculo['modelo']; ?>"
         required
     >
 
     <input
         type="number"
         name="anio"
-        value="<?= $data['anio']; ?>"
+        value="<?= $vehiculo['anio']; ?>"
         required
     >
 
     <input
         type="text"
         name="categoria"
-        value="<?= $data['categoria']; ?>"
+        value="<?= $vehiculo['categoria']; ?>"
     >
 
     <select name="estado">
 
         <option value="disponible"
-            <?= $data['estado'] == 'disponible' ? 'selected' : ''; ?>>
+            <?= $vehiculo['estado'] == 'disponible' ? 'selected' : ''; ?>>
             Disponible
         </option>
 
         <option value="alquilado"
-            <?= $data['estado'] == 'alquilado' ? 'selected' : ''; ?>>
+            <?= $vehiculo['estado'] == 'alquilado' ? 'selected' : ''; ?>>
             Alquilado
         </option>
 
         <option value="mantenimiento"
-            <?= $data['estado'] == 'mantenimiento' ? 'selected' : ''; ?>>
+            <?= $vehiculo['estado'] == 'mantenimiento' ? 'selected' : ''; ?>>
             Mantenimiento
         </option>
 

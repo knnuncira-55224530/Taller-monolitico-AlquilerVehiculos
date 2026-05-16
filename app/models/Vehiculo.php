@@ -49,4 +49,56 @@
   
           return $stmt->execute();
       } 
+
+      public function obtenerPorId($id)
+{
+    $query = "SELECT * FROM " . $this->table . " WHERE id = :id";
+
+    $stmt = $this->conn->prepare($query);
+
+    $stmt->bindParam(':id', $id);
+
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+ public function actualizar(
+    $id,
+    $marca,
+    $modelo,
+    $anio,
+    $categoria,
+    $estado
+) {
+
+    $query = "UPDATE " . $this->table . "
+    SET
+    marca = :marca,
+    modelo = :modelo,
+    anio = :anio,
+    categoria = :categoria,
+    estado = :estado
+    WHERE id = :id";
+
+    $stmt = $this->conn->prepare($query);
+
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':marca', $marca);
+    $stmt->bindParam(':modelo', $modelo);
+    $stmt->bindParam(':anio', $anio);
+    $stmt->bindParam(':categoria', $categoria);
+    $stmt->bindParam(':estado', $estado);
+
+    return $stmt->execute();
+}
+  public function eliminar($id)
+{
+    $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+
+    $stmt = $this->conn->prepare($query);
+
+    $stmt->bindParam(':id', $id);
+
+    return $stmt->execute();
+}
  }

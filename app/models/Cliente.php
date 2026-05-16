@@ -80,15 +80,14 @@ class Cliente {
 
         return $stmt->execute();
     }
+public function eliminar($id)
+{
+    $query = "DELETE FROM " . $this->table . " WHERE id = :id";
 
-    public function eliminar($id) {
+    $stmt = $this->conn->prepare($query);
 
-        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+    $stmt->bindParam(':id', $id);
 
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(':id', $id);
-
-        return $stmt->execute();
-    }
+    return $stmt->execute();
+}
 }

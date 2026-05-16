@@ -50,4 +50,50 @@ class VehiculoController {
             header('Location: index.php?controller=vehiculo&action=index');
         }
     }
+    public function edit()
+{
+    $id = $_GET['id'];
+
+    $vehiculo = $this->vehiculoModel->obtenerPorId($id);
+
+    $this->view('vehiculos/edit', [
+        'vehiculo' => $vehiculo
+    ]);
+}
+
+public function update()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $id = $_POST['id'];
+        $marca = $_POST['marca'];
+        $modelo = $_POST['modelo'];
+        $anio = $_POST['anio'];
+        $categoria = $_POST['categoria'];
+        $estado = $_POST['estado'];
+
+        $this->vehiculoModel->actualizar(
+            $id,
+            $marca,
+            $modelo,
+            $anio,
+            $categoria,
+            $estado
+        );
+
+        header('Location: index.php');
+    }
+}
+public function delete()
+{
+    if (isset($_GET['id'])) {
+
+        $id = $_GET['id'];
+
+        $this->vehiculoModel->eliminar($id);
+
+        header('Location: index.php');
+        exit();
+    }
+}
 }

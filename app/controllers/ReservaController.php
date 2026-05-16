@@ -63,4 +63,17 @@ class ReservaController {
             header('Location: index.php?controller=reserva&action=index');
         }
     }
+
+    public function finalizar()
+{
+    if (isset($_GET['id'])) {
+
+        $id = $_GET['id'];
+
+        $this->reservaModel->finalizar($id);
+
+        header('Location: index.php?controller=reserva&action=index');
+        exit();
+    }
+}
 }
