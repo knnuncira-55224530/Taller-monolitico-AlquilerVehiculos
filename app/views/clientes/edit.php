@@ -7,26 +7,26 @@
     <input
         type="text"
         name="nombre"
-        value="<?= $data['nombre']; ?>"
+        value="<?= $cliente['nombre']; ?>"
         required
     >
 
     <input
         type="text"
         name="telefono"
-        value="<?= $data['telefono']; ?>"
+        value="<?= $cliente['telefono']; ?>"
     >
 
     <input
         type="email"
         name="correo"
-        value="<?= $data['correo']; ?>"
+        value="<?= $cliente['correo']; ?>"
     >
 
     <input
         type="text"
         name="numero_licencia"
-        value="<?= $data['numero_licencia']; ?>"
+        value="<?= $cliente['numero_licencia']; ?>"
     >
 
     <button type="submit">
