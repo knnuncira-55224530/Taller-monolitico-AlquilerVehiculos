@@ -60,34 +60,40 @@ class Cliente {
         return $stmt->execute();
     }
 
-    public function actualizar($id, $nombre, $telefono, $correo, $numero_licencia) {
+    public function actualizar(
+    $id,
+    $nombre,
+    $telefono,
+    $correo,
+    $numero_licencia
+) {
 
-        $query = "UPDATE " . $this->table . "
-        SET
+    $query = "UPDATE " . $this->table . "
+    SET
         nombre = :nombre,
         telefono = :telefono,
         correo = :correo,
         numero_licencia = :numero_licencia
-        WHERE id = :id";
-
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':telefono', $telefono);
-        $stmt->bindParam(':correo', $correo);
-        $stmt->bindParam(':numero_licencia', $numero_licencia);
-
-        return $stmt->execute();
-    }
-public function eliminar($id)
-{
-    $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+    WHERE id = :id";
 
     $stmt = $this->conn->prepare($query);
 
     $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':nombre', $nombre);
+    $stmt->bindParam(':telefono', $telefono);
+    $stmt->bindParam(':correo', $correo);
+    $stmt->bindParam(':numero_licencia', $numero_licencia);
 
     return $stmt->execute();
 }
+    public function eliminar($id)
+    {
+        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':id', $id);
+
+        return $stmt->execute();
+    }
 }

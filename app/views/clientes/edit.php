@@ -2,7 +2,13 @@
 
 <h2>Editar Cliente</h2>
 
-<form method="POST" action="?module=clientes&action=update&id=<?= $data['id']; ?>">
+<form method="POST" action="?controller=cliente&action=update">
+
+    <input
+        type="hidden"
+        name="id"
+        value="<?= $cliente['id']; ?>"
+    >
 
     <input
         type="text"

@@ -60,8 +60,8 @@ class ClienteController {
         ]);
     }
 
-   public function update() {
-
+   public function update()
+{
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $id = $_POST['id'];
@@ -79,6 +79,8 @@ class ClienteController {
         );
 
         header('Location: index.php?controller=cliente&action=index');
+
+        exit();
     }
 }
 
